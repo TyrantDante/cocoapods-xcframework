@@ -1,5 +1,10 @@
 # cocoapods-framework
 
+- 你是不是发现 `cocoapods-packager` 不能支持 `Swift`?
+- 你是不是发现 `cocoapods-packager` 不能支持 `m1`?
+- 你是不是发现 `cocoapods-packager` 不能支持 `GCC module`?
+- 你是不是发现 `cocoapods-packager` 不能支持 `watch` 和 `tv`?
+- 那你不妨试试我们这个插件～，美滋滋哦～
 本插件可以帮助开发者快速的创建一个`OC`/`Swift`的`xcframework`。
 
 ## feat
