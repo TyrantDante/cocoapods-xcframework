@@ -12,7 +12,7 @@
     $ gem install cocoapods-framework
 
 ## Usage
-    $ pod framework POD_NAME
+    $ pod framework NAME [SOURCE]
     更多请看
     $pod framework --help
 

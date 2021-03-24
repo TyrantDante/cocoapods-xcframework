@@ -31,7 +31,7 @@ module Pod
           ['--configuration', 'Build the specified configuration (e.g. Debug). Defaults to Release'],
           ['--spec-sources=private,https://github.com/CocoaPods/Specs.git', 'The sources to pull dependent pods from (defaults to https://github.com/CocoaPods/Specs.git)'],
           ['--subspecs', 'Only include the given subspecs']
-        ].contact super
+        ].concat super
       end
 
       def initialize(argv)
@@ -53,6 +53,7 @@ module Pod
       def run
         frameworker = Frameworker.new(@name, @source, @spec_sources, @subspecs, @configuration, @force)
         frameworker.run
+        super
       end
     end
   end
