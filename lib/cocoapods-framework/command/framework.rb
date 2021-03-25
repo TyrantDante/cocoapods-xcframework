@@ -53,7 +53,6 @@ module Pod
       def run
         frameworker = Frameworker.new(@name, @source, @spec_sources, @subspecs, @configuration, @force)
         frameworker.run
-        super
       end
     end
   end
