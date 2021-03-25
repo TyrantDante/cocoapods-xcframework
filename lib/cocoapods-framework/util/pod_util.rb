@@ -83,25 +83,25 @@ module Pod
 
     def generic_new_podspec_hash spec
       spec_hash = spec.to_hash
-      %w(
-        source_files,
-        resources,
-        resource_bundles,
-        prefix_header_contents,
-        prefix_header_file,
-        header_dir,
-        header_mappings_dir,
-        script_phase,
-        public_header_files,
-        private_header_files,
-        vendored_frameworks,
-        vendored_libraries,
-        exclude_files,
-        preserve_paths,
-        module_map,
-        subspec
-      ).each do |key|
-        spec_hash.delete key.to_sym
+      [
+        "source_files",
+        "resources",
+        "resource_bundles",
+        "prefix_header_contents",
+        "prefix_header_file",
+        "header_dir",
+        "header_mappings_dir",
+        "script_phase",
+        "public_header_files",
+        "private_header_files",
+        "vendored_frameworks",
+        "vendored_libraries",
+        "exclude_files",
+        "preserve_paths",
+        "module_map",
+        "subspec"
+      ].each do |key|
+        spec_hash.delete "#{key}"
       end
       spec_hash
     end

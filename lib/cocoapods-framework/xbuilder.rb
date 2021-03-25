@@ -46,7 +46,7 @@ module Pod
       command << "-output #{@sandbox_root}/#{@spec.name}.xcframework 2>&1"
       UI.puts `#{command}`
       if $?.exitstatus != 0
-        UI.puts UI::BuildFailedReport.report(command, output)
+        UI.puts(output)
         Process.exit
       end
       "#{@sandbox_root}/#{@spec.name}.xcframework"
@@ -96,7 +96,7 @@ module Pod
     def outputs_xcframework target_dir
       `cp -rp #{@outputs} #{target_dir} 2>&1`
       if $?.exitstatus != 0
-        UI.puts UI::BuildFailedReport.report(command, output)
+        UI.puts output
         Process.exit
       end
     end
