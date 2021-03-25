@@ -8,7 +8,7 @@ module Pod
       @source = source
       @spec_sources = spec_sources
       @subspecs = subspecs
-      @configuration = 'Debug'
+      @configuration = configuration
       @force = force
     end
 
