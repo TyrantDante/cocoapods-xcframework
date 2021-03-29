@@ -44,14 +44,12 @@ module Pod
       )
 
       installer = Installer.new(sandbox, podfile)
-      puts podfile.to_hash.to_json
       installer.install!
 
       unless installer.nil? 
         installer.pods_project.targets.each do |target|
           target.build_configurations.each do |configuration|
-            configuration.build_settings['CLANG_MODULES_AUTOLINK'] = 'NO'
-            configuration.build_settings['GCC_GENERATE_DEBUGGING_SYMBOLS'] = 'NO'
+            # configuration.build_settings['CLANG_MODULES_AUTOLINK'] = 'NO'
           end
         end
         installer.pods_project.save

@@ -21,10 +21,11 @@ module Pod
       UI.puts("Building framework #{@spec} with configuration #{@configuration}")
       UI.puts "Work dir is :#{@sandbox_root}"
       defines = "GCC_PREPROCESSOR_DEFINITIONS='$(inherited) PodsDummy_Pods_#{@spec.name}=PodsDummy_PodPackage_#{@spec.name}'"
-      # defines << ' ' << @spec.consumer(@platform).compiler_flags.join(' ')
 
       if @configuration == 'Debug'
         defines << 'GCC_GENERATE_DEBUGGING_SYMBOLS=YES ONLY_ACTIVE_ARCH=NO'
+      else
+        defines << "GCC_GENERATE_DEBUGGING_SYMBOLS=NO"
       end
 
       build_all_device defines
