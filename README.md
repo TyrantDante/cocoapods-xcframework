@@ -14,8 +14,8 @@
 - 支持 `subspec` 打包
 ## Installation
 
-    $ gem install cocoapods-framework
-    $ gem install cocoapods-framework-*.gem //本地安装
+    $ gem install cocoapods-xcframework
+    $ gem install cocoapods-xcframework-*.gem //本地安装
 
 ## Usage
     $ pod framework NAME [SOURCE]
