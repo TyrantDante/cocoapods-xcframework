@@ -44,7 +44,7 @@ module Pod
         command << "-framework #{framework} "
       end
       command << "-output #{@sandbox_root}/#{@spec.name}.xcframework 2>&1"
-      output = `#{command}`
+      output = `#{command}`.lines.to_a
       if $?.exitstatus != 0
         Pod::ErrorUtil.error_report command,output
         Process.exit -1
@@ -95,7 +95,7 @@ module Pod
 
     def outputs_xcframework target_dir
       command = "cp -rp #{@outputs} #{target_dir} 2>&1"
-      output = `#{command}`
+      output = `#{command}`.lines.to_a
       if $?.exitstatus != 0
         Pod::ErrorUtil.error_report command,output
         Process.exit -1
