@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'cocoapods-framework/gem_version.rb'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'cocoapods-framework'
+  spec.name          = 'cocoapods-xcframework'
   spec.version       = CocoapodsFramework::VERSION
   spec.authors       = ['戴易超']
   spec.email         = ['daiyichao@corp.netease.com']
-  spec.description   = %q{A short description of cocoapods-framework.}
-  spec.summary       = %q{A longer description of cocoapods-framework.}
-  spec.homepage      = 'https://github.com/EXAMPLE/cocoapods-framework'
+  spec.description   = %q{A short description of cocoapods-xcframework.}
+  spec.summary       = %q{A longer description of cocoapods-xcframework.}
+  spec.homepage      = 'https://github.com/TyrantDante/cocoapods-framework'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
