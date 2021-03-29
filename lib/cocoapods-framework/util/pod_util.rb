@@ -77,7 +77,7 @@ module Pod
           :integrate_targets => false,
           :deterministic_uuids => false)
         
-        use_modular_headers! if use_frameworks
+          use_frameworks! if use_frameworks
       end
     end
 
