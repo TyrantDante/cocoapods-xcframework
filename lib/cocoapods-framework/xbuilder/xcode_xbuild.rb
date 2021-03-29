@@ -8,7 +8,7 @@ module Pod
         pwd = Pathname.pwd
         Dir.chdir work_dir
         command = "xcodebuild #{defines} BUILD_DIR=#{build_dir} BUILD_LIBRARY_FOR_DISTRIBUTION=YES clean build -configuration #{configuration} -alltargets 2>&1"
-        output = `#{command}`.lines.to_s
+        output = `#{command}`.lines.to_a
         Dir.chdir pwd
         if $?.exitstatus != 0
           Pod::ErrorUtil.error_report command,output
