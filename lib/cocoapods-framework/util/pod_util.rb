@@ -33,14 +33,14 @@ module Pod
       Sandbox.new(config.sandbox_root)
     end
 
-    def installation_root sandbox, spec, subspecs, sources,use_frameworks = true
+    def installation_root sandbox, spec, subspecs, sources,use_frameworks = true,use_modular_headers = true
         podfile = podfile_from_spec(
         @path,
         spec,
-        # platform,
         subspecs,
         sources,
-        use_frameworks
+        use_frameworks,
+        use_modular_headers
       )
 
       installer = Installer.new(sandbox, podfile)
@@ -59,7 +59,7 @@ module Pod
       installer
     end
 
-    def podfile_from_spec path, spec, subspecs, sources, use_frameworks = true
+    def podfile_from_spec path, spec, subspecs, sources, use_frameworks = true, use_modular_headers=true
         options = Hash.new
       options[:podspec] = path.to_s
       options[:subspecs] = subspecs if subspecs
@@ -77,8 +77,9 @@ module Pod
           :integrate_targets => false,
           :deterministic_uuids => false)
 
-        use_frameworks! if use_frameworks
-      end
+          use_frameworks! if use_frameworks
+          use_modular_headers! if use_modular_headers
+        end
     end
 
     def generic_new_podspec_hash spec

@@ -3,13 +3,14 @@ module Pod
     include PodUtil
     include DirUtil
     include Config::Mixin
-    def initialize(name, source, spec_sources, subspecs, configuration, force)
+    def initialize(name, source, spec_sources, subspecs, configuration, force, use_modular_headers)
       @name = name
       @source = source
       @spec_sources = spec_sources
       @subspecs = subspecs
       @configuration = configuration
       @force = force
+      @use_modular_headers = use_modular_headers
     end
 
     def run
@@ -35,6 +36,7 @@ module Pod
         spec,
         @subspecs,
         @spec_sources,
+        @use_modular_headers
       )
 
       perform_build(
