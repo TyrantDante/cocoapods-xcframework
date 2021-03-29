@@ -12,7 +12,7 @@ module Pod
         Dir.chdir pwd
         if $?.exitstatus != 0
           UI.puts output.join("")
-          Process.exit
+          Process.exit -1
         end
       end
     end

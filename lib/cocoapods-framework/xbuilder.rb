@@ -97,7 +97,7 @@ module Pod
       output = `cp -rp #{@outputs} #{target_dir} 2>&1`
       if $?.exitstatus != 0
         UI.puts output.join("")
-        Process.exit
+        Process.exit -1
       end
     end
   end
