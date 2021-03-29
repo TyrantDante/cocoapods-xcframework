@@ -30,7 +30,8 @@ module Pod
           ['--no-force',     'Overwrite existing files.'],
           ['--configuration', 'Build the specified configuration (e.g. Debug). Defaults to Release'],
           ['--spec-sources=private,https://github.com/CocoaPods/Specs.git', 'The sources to pull dependent pods from (defaults to https://github.com/CocoaPods/Specs.git)'],
-          ['--subspecs', 'Only include the given subspecs']
+          ['--subspecs', 'Only include the given subspecs'],
+          ['--use-modular-headers', 'pakcage uses modular headers during packaging']
         ].concat super
       end
 
@@ -41,6 +42,7 @@ module Pod
         subspecs = argv.option('subspecs')
         @subspecs = subspecs.split(',') unless subspecs.nil?
         @configuration = argv.option('configuration', 'Release')
+        @use_modular_headers = argv.option('use-modular-headers', true)
         @force = argv.flag?('force', true)
         super
       end
@@ -51,7 +53,7 @@ module Pod
       end
 
       def run
-        frameworker = Frameworker.new(@name, @source, @spec_sources, @subspecs, @configuration, @force)
+        frameworker = Frameworker.new(@name, @source, @spec_sources, @subspecs, @configuration, @force, @use_modular_headers)
         frameworker.run
       end
     end
