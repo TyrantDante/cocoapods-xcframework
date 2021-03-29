@@ -8,12 +8,12 @@ module Pod
       @path = path.expand_path
 
       if @path.directory?
-        help! @path + ': is a directory.'
+        raise @path + ': is a directory.'
         return
       end
 
       unless ['.podspec', '.json'].include? @path.extname
-        help! @path + ': is not a podspec.'
+        raise @path + ': is not a podspec.'
         return
       end
 
@@ -76,8 +76,8 @@ module Pod
         install!('cocoapods',
           :integrate_targets => false,
           :deterministic_uuids => false)
-
-        use_frameworks! if use_frameworks
+        
+        use_modular_headers! if use_frameworks
       end
     end
 
