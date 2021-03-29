@@ -11,7 +11,7 @@ module Pod
         output = `#{command}`.lines.to_s
         Dir.chdir pwd
         if $?.exitstatus != 0
-          UI.puts output.join("")
+          Pod::ErrorUtil.error_report command,output
           Process.exit -1
         end
       end
