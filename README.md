@@ -15,6 +15,7 @@
 ## Installation
 
     $ gem install cocoapods-framework
+    $ gem install cocoapods-framework-*.gem //本地安装
 
 ## Usage
     $ pod framework NAME [SOURCE]
