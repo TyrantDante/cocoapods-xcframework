@@ -21,10 +21,11 @@ module Pod
       UI.puts("Building framework #{@spec} with configuration #{@configuration}")
       UI.puts "Work dir is :#{@sandbox_root}"
       defines = "GCC_PREPROCESSOR_DEFINITIONS='$(inherited) PodsDummy_Pods_#{@spec.name}=PodsDummy_PodPackage_#{@spec.name}'"
-      # defines << ' ' << @spec.consumer(@platform).compiler_flags.join(' ')
 
       if @configuration == 'Debug'
         defines << 'GCC_GENERATE_DEBUGGING_SYMBOLS=YES ONLY_ACTIVE_ARCH=NO'
+      else
+        defines << "GCC_GENERATE_DEBUGGING_SYMBOLS=NO"
       end
 
       build_all_device defines
@@ -44,10 +45,10 @@ module Pod
         command << "-framework #{framework} "
       end
       command << "-output #{@sandbox_root}/#{@spec.name}.xcframework 2>&1"
-      output = `#{command}`
+      output = `#{command}`.lines.to_a
       if $?.exitstatus != 0
-        UI.puts(output)
-        Process.exit
+        Pod::ErrorUtil.error_report command,output
+        Process.exit -1
       end
       "#{@sandbox_root}/#{@spec.name}.xcframework"
     end
@@ -94,10 +95,11 @@ module Pod
     end
 
     def outputs_xcframework target_dir
-      output = `cp -rp #{@outputs} #{target_dir} 2>&1`
+      command = "cp -rp #{@outputs} #{target_dir} 2>&1"
+      output = `#{command}`.lines.to_a
       if $?.exitstatus != 0
-        UI.puts output
-        Process.exit
+        Pod::ErrorUtil.error_report command,output
+        Process.exit -1
       end
     end
   end
