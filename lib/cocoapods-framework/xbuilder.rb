@@ -111,7 +111,6 @@ module Pod
       end
       UI.puts "result export at :#{target_dir}"
       target_dir
-      exit -1
     end
     
     def find_bundles target_dir
@@ -124,7 +123,6 @@ module Pod
         plat = bundle_relative_path.gsub(bundle_name,"")
         result[plat] = "bundle/" + bundle_relative_path
       end
-      puts result
       result
     end
 
