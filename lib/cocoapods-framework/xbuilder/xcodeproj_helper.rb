@@ -18,6 +18,17 @@ module Pod
         project.save
       end
 
+      def to_native_platform name
+        case name
+        when 'iphoneos' then 'ios'
+        when 'macOS' then 'osx'
+        when 'appletvos' then 'tvos'
+        when 'watchos' then 'watchos'
+        else
+          name
+        end
+      end
+
       private
       def xcode_sdks
         return @x_sdks if @x_sdks
