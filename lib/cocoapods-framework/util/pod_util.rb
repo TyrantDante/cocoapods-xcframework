@@ -48,8 +48,10 @@ module Pod
 
       unless installer.nil? 
         installer.pods_project.targets.each do |target|
-          target.build_configurations.each do |configuration|
-            configuration.build_settings['CLANG_MODULES_AUTOLINK'] = 'NO'
+          if target.name == spec.name
+            target.build_configurations.each do |configuration|
+              configuration.build_settings['CLANG_MODULES_AUTOLINK'] = 'NO'
+            end
           end
         end
         installer.pods_project.save
