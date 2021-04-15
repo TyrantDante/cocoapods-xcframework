@@ -132,7 +132,7 @@ module Pod
         bundle_relative_path = bundle.to_s.gsub(bundle_root, "")
         plat = bundle_relative_path
         result[plat] = {
-          "NMCAlbumKit" => "bundle/" + bundle_relative_path + "/*"
+          "#{@spec.name}" => "bundle/" + bundle_relative_path + "/*"
         }
       end
       result
