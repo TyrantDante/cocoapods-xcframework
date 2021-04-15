@@ -43,8 +43,11 @@ module Pod
 
     def collect_bundles
       ["iphoneos","macOS","appletvos","watchos"].each do |plat|
-        export_dir = "#{@sandbox_root}/export/*-#{plat}/**/#{@spec.name}.bundle"
+        export_dir = "#{@sandbox_root}/export/*-#{plat}/**/#{@spec.name}.bundle/**"
         Pathname.glob(export_dir).each do |bundle|
+          if bundle.to_s.include? "#{@spec.name}.bundle/Info.plist"
+            return
+          end
           @outputs[:bundle] = "#{@sandbox_root}/bundle"
           native_platform = to_native_platform plat
           path = Pathname.new "#{@sandbox_root}/bundle/#{native_platform}"
@@ -103,7 +106,15 @@ module Pod
       outputs_bundle target_dir
       new_spec_hash = generic_new_podspec_hash @spec
       new_spec_hash[:vendored_frameworks] = "#{@spec.name}.xcframework"
-      new_spec_hash[:resource_bundles] = find_bundles target_dir
+      find_bundles(target_dir).each do |plat, value| 
+        if new_spec_hash[plat]
+          new_spec_hash[plat]["resource_bundles"] = value
+        else
+          new_spec_hash[plat] = {
+            "resource_bundles" => value
+          }
+        end
+      end
       require 'json'
       spec_json = JSON.pretty_generate(new_spec_hash) << "\n"
       File.open("#{target_dir}/#{@spec.name}.podspec.json",'wb+') do |f|
@@ -115,13 +126,14 @@ module Pod
     
     def find_bundles target_dir
       bundle_root = "#{target_dir}/bundle/"
-      bundle_name = "/#{@spec.name}.bundle"
-      pattern = "#{bundle_root}*#{bundle_name}"
+      pattern = "#{bundle_root}*"
       result = {}
       Pathname.glob(pattern).each do |bundle|
         bundle_relative_path = bundle.to_s.gsub(bundle_root, "")
-        plat = bundle_relative_path.gsub(bundle_name,"")
-        result[plat] = "bundle/" + bundle_relative_path
+        plat = bundle_relative_path
+        result[plat] = {
+          "NMCAlbumKit" => "bundle/" + bundle_relative_path + "/*"
+        }
       end
       result
     end
