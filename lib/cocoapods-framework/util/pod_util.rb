@@ -1,5 +1,20 @@
 module Pod
   module PodUtil
+    include Config::Mixin
+    def muti_config_with_file(path)
+      return nil if path.nil?
+      path = Pathname.new(path)
+      path = Pathname.new(Dir.pwd).join(path) unless path.absolute?
+      @path = path.expand_path
+      content = File.open(path, 'rb').read
+      result = JSON.parse content
+      if not result.is_a? Array
+        UI.error "#{path} format not support"
+        exit -1
+      end
+      result
+    end
+
     def spec_with_path(path)
       return if path.nil?
       path = Pathname.new(path)
@@ -59,9 +74,37 @@ module Pod
       installer
     end
 
+    def installation_root_muti sandbox, configs, sources, use_frameworks = true, use_modular_headers = true
+      podfile = podfile_from_muti_configs(
+        configs,
+        sources,
+        use_frameworks,
+        use_modular_headers
+      )
+      installer = Installer.new(sandbox, podfile)
+      installer.install!
+      specs = configs.map do |cfg|
+        cfg["name"]
+      end
+      unless installer.nil? 
+        installer.pods_project.targets.each do |target|
+          if specs.include? target.name
+            target.build_configurations.each do |configuration|
+              configuration.build_settings['CLANG_MODULES_AUTOLINK'] = 'NO'
+            end
+          end
+        end
+        installer.pods_project.save
+      end
+      installer
+    end
+
     def podfile_from_spec path, spec, subspecs, sources, use_frameworks = true, use_modular_headers=true
         options = Hash.new
       options[:podspec] = path.to_s
+      option[:subspecs] = spec.subspecs.map do |sub|
+        sub.name
+      end
       options[:subspecs] = subspecs if subspecs
 
       Pod::Podfile.new do
@@ -73,13 +116,46 @@ module Pod
           end
         end
 
+        install!('cocoapods',:integrate_targets => false,:deterministic_uuids => false)
+
+        use_frameworks! if use_frameworks
+        use_modular_headers! if use_modular_headers
+      end
+    end
+
+    def podfile_from_muti_configs configs, sources, use_frameworks = true, use_modular_headers = true
+      installation_root = config.installation_root.to_s
+      Pod::Podfile.new do 
+        sources.each {|s| source s}
+        configs.each do |cfg|
+          pod_spec_path = installation_root + "/#{cfg["name"]}/#{cfg["name"]}.podspec"
+          pod_spec_json_path = pod_spec_path + ".json"
+          (Pathname.glob(pod_spec_path) + Pathname.glob(pod_spec_json_path)).each do |real_path|
+            spec = Pod::Specification.from_file real_path.to_s
+            options = Hash.new 
+            options[:podspec] = real_path.to_s
+            if cfg["subspecs"]
+              options[:subspecs] = cfg["subspecs"]
+            else
+              options[:subspecs] = spec.subspecs.map do |sub|
+                sub.name
+              end
+            end
+            spec.available_platforms.each do |plt|
+              target "#{spec.name}-#{plt.name}" do 
+                platform(plt.name, spec.deployment_target(plt.name))
+                pod(spec.name, options)
+              end
+            end
+          end
+        end
         install!('cocoapods',
           :integrate_targets => false,
           :deterministic_uuids => false)
 
-          use_frameworks! if use_frameworks
-          use_modular_headers! if use_modular_headers
-        end
+        use_frameworks! if use_frameworks
+        use_modular_headers! if use_modular_headers
+      end
     end
 
     def generic_new_podspec_hash spec

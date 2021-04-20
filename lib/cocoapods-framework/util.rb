@@ -1,3 +1,5 @@
 require 'cocoapods-framework/util/error_util'
+require 'cocoapods-framework/util/cmd'
+require 'cocoapods-framework/util/git_util'
 require 'cocoapods-framework/util/pod_util'
 require 'cocoapods-framework/util/dir_util'

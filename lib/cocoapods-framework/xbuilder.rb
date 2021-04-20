@@ -13,6 +13,10 @@ module Pod
       @source_dir = source_dir
       @sandbox_root = sandbox_root
       @spec = spec
+      @muti = @spec.is_a? Array
+      @configs = @spec if @muti
+      @spec = "muti" if @muti
+
       @configuration = configuration
       @outputs = {}
     end
@@ -36,12 +40,33 @@ module Pod
     end
 
     def collect_xc_frameworks
+      if @muti
+        collection_muti_xcframworks
+      else
+       collect_single_xcframeworks
+      end
+    end
+
+    def collect_muti_xcframworks
+    end
+
+    def collect_single_xcframeworks 
       export_dir = "#{@sandbox_root}/export/**/#{@spec.name}.framework"
       frameworks = Pathname.glob(export_dir)
-      @outputs[:xcframework] = create_xc_framework_by_frameworks frameworks
+      @outputs[:xcframework] = create_xc_framework_by_frameworks frameworks, @spec
     end
 
     def collect_bundles
+      if @muti
+      else
+        collect_single_bundles
+      end
+    end
+
+    def colelct_muti_bundles 
+    end
+
+    def collect_single_bundles 
       ["iphoneos","macOS","appletvos","watchos"].each do |plat|
         export_dir = "#{@sandbox_root}/export/*-#{plat}/**/#{@spec.name}.bundle/**"
         Pathname.glob(export_dir).each do |bundle|
@@ -59,7 +84,7 @@ module Pod
       end
     end
 
-    def create_xc_framework_by_frameworks frameworks
+    def create_xc_framework_by_frameworks frameworks, spec
       command = 'xcodebuild -create-xcframework '
       frameworks.each do |framework|
         command << "-framework #{framework} "
@@ -152,5 +177,6 @@ module Pod
         FileUtils.cp_r(Dir[@outputs[:bundle]],target_dir)
       end
     end
+
   end
 end
