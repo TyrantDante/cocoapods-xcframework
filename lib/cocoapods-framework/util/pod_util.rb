@@ -83,6 +83,7 @@ module Pod
       )
       installer = Installer.new(sandbox, podfile)
       installer.install!
+
       specs = configs.map do |cfg|
         cfg["name"]
       end
@@ -100,7 +101,7 @@ module Pod
     end
 
     def podfile_from_spec path, spec, subspecs, sources, use_frameworks = true, use_modular_headers=true
-        options = Hash.new
+      options = Hash.new
       options[:podspec] = path.to_s
       option[:subspecs] = spec.subspecs.map do |sub|
         sub.name
@@ -141,8 +142,13 @@ module Pod
                 sub.name
               end
             end
+            # 非常奇怪，如果传一个空的数组过去就会出问题！！
+            if options[:subspecs].length == 0
+              options[:subspecs] = nil
+            end
             spec.available_platforms.each do |plt|
               target "#{spec.name}-#{plt.name}" do 
+                puts "#{plt.name} #{spec.name} #{options}"
                 platform(plt.name, spec.deployment_target(plt.name))
                 pod(spec.name, options)
               end

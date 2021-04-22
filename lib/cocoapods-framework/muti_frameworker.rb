@@ -41,7 +41,15 @@ module Pod
 
     def perform_build sandbox, installer, configs, target_dir
       sandbox_root = config.sandbox_root.to_s
-
+      builder = Pod::XBuilder.new(
+        installer,
+        Dir.pwd,
+        sandbox_root,
+        configs,
+        @configuration
+      )
+      builder.build
+      builder.outputs_muti target_dir
     end
 
 
