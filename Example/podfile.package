@@ -1,0 +1,7 @@
+[
+  {
+    "name": "NKOpusModule",
+    "git_url": "ssh://git@g.hz.netease.com:22222/cloudmusic-ios/NKOpusModule.git",
+    "git_branch" : "feature/ktvroom"
+  }
+]

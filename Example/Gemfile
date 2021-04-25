@@ -1,0 +1,11 @@
+source "https://rubygems.org"
+gem "fastlane"
+gem "cocoapods", '1.10.0'
+gem 'rest-client', '2.1.0'
+gem 'mail', '2.7.1'
+gem 'json', '2.3.1'
+gem 'Martin', :path => '/Users/daiyichao/Desktop/work/martin/martin-ruby'
+gem 'ipa_analyzer', :git=>'ssh://git@g.hz.netease.com:22222/cloudmusic-ruby/ipa_analyzer.git'
+gem 'cocoapods-codegen', :git=>'ssh://git@g.hz.netease.com:22222/cloudmusic-ruby/cocoapods-codegen.git'
+gem 'cocoapods-xcframework',:path=>'/Users/daiyichao/Desktop/work/cocoapods-framework'
+gem 'ffi', '1.14.2'

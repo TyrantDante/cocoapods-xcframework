@@ -82,6 +82,7 @@ module Pod
         use_modular_headers
       )
       installer = Installer.new(sandbox, podfile)
+      installer.repo_update = true
       installer.install!
 
       specs = configs.map do |cfg|
