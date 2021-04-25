@@ -108,6 +108,10 @@ module Pod
         sub.name
       end
       options[:subspecs] = subspecs if subspecs
+      # 非常奇怪，如果传一个空的数组过去就会出问题！！
+      if options[:subspecs].length == 0
+        options[:subspecs] = nil
+      end
       static_library_enable = config.static_library_enable?
       Pod::Podfile.new do
         sources.each {|s| source s}
