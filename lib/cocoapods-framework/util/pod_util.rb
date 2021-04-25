@@ -107,7 +107,7 @@ module Pod
         sub.name
       end
       options[:subspecs] = subspecs if subspecs
-
+      static_library_enable = config.static_library_enable?
       Pod::Podfile.new do
         sources.each {|s| source s}
         spec.available_platforms.each do |plt|
@@ -118,14 +118,18 @@ module Pod
         end
 
         install!('cocoapods',:integrate_targets => false,:deterministic_uuids => false)
-
-        use_frameworks! if use_frameworks
+        if static_library_enable
+          use_frameworks! :linkage => :static if use_frameworks
+        else
+          use_frameworks! if use_frameworks
+        end
         use_modular_headers! if use_modular_headers
       end
     end
 
     def podfile_from_muti_configs configs, sources, use_frameworks = true, use_modular_headers = true
       installation_root = config.installation_root.to_s
+      static_library_enable = config.static_library_enable?
       Pod::Podfile.new do 
         sources.each {|s| source s}
         configs.each do |cfg|
@@ -159,8 +163,12 @@ module Pod
           :integrate_targets => false,
           :deterministic_uuids => false)
 
-        use_frameworks! if use_frameworks
-        use_modular_headers! if use_modular_headers
+          if static_library_enable
+            use_frameworks! :linkage => :static if use_frameworks
+          else
+            use_frameworks! if use_frameworks
+          end
+          use_modular_headers! if use_modular_headers
       end
     end
 
