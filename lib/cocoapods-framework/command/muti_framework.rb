@@ -30,7 +30,8 @@ module Pod
           ['--no-force',     'Overwrite existing files.'],
           ['--configuration', 'Build the specified configuration (e.g. Debug). Defaults to Release'],
           ['--spec-sources=private,https://github.com/CocoaPods/Specs.git', 'The sources to pull dependent pods from (defaults to https://github.com/CocoaPods/Specs.git)'],
-          ['--use-modular-headers', 'pakcage uses modular headers during packaging']
+          ['--use-modular-headers', 'pakcage uses modular headers during packaging'],
+          ['--no-static-library', 'package not use static library']
         ].concat super
       end
 
@@ -41,6 +42,8 @@ module Pod
         @configuration = argv.option('configuration', 'Release')
         @use_modular_headers = argv.option('use-modular-headers', true)
         @force = argv.flag?('force', true)
+        @use_static_library = argv.flag?('static-library', true)
+        config.static_library_enable = @use_static_library
         super
       end
 
