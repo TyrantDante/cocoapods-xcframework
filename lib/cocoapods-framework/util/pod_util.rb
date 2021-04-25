@@ -104,7 +104,7 @@ module Pod
     def podfile_from_spec path, spec, subspecs, sources, use_frameworks = true, use_modular_headers=true
       options = Hash.new
       options[:podspec] = path.to_s
-      option[:subspecs] = spec.subspecs.map do |sub|
+      options[:subspecs] = spec.subspecs.map do |sub|
         sub.name
       end
       options[:subspecs] = subspecs if subspecs
