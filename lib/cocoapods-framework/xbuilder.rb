@@ -74,8 +74,8 @@ module Pod
       @outputs[:bundle] = Hash.new
       @configs.each do |cfg|
         # "" 这个是用来代表mac os的 macos 没有后缀奇怪吧
-        ["-iphoneos","","-appletvos","-watchos"].each do |plat|
-          export_dir = "#{@sandbox_root}/export/*#{plat}/**/#{cfg["name"]}.bundle/**"
+        ["iphoneos","","appletvos","watchos"].each do |plat|
+          export_dir = "#{@sandbox_root}/export/*-#{plat}/**/#{cfg["name"]}.bundle/**"
           Pathname.glob(export_dir).each do |bundle|
             if bundle.to_s.include? "#{@spec.name}.bundle/Info.plist"
               return
@@ -95,8 +95,8 @@ module Pod
 
     def collect_single_bundles 
       # "" 这个是用来代表mac os的 macos 没有后缀奇怪吧
-      ["-iphoneos","","-appletvos","-watchos"].each do |plat|
-        export_dir = "#{@sandbox_root}/export/*#{plat}/**/#{@spec.name}.bundle/**"
+      ["iphoneos","","appletvos","watchos"].each do |plat|
+        export_dir = "#{@sandbox_root}/export/*-#{plat}/**/#{@spec.name}.bundle/**"
         Pathname.glob(export_dir).each do |bundle|
           if bundle.to_s.include? "#{@spec.name}.bundle/Info.plist"
             return
