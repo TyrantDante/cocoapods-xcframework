@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = CocoapodsFramework::VERSION
   spec.authors       = ['戴易超']
   spec.email         = ['daiyichao@corp.netease.com']
-  spec.description   = %q{A short description of cocoapods-xcframework.}
-  spec.summary       = %q{A longer description of cocoapods-xcframework.}
+  spec.description   = %q{把podspec打包成xcframework的小工具。packager pod to a xcframework}
+  spec.summary       = %q{把podspec打包成xcframework的小工具。packager pod to a xcframework}
   spec.homepage      = 'https://github.com/TyrantDante/cocoapods-framework'
   spec.license       = 'MIT'
 
