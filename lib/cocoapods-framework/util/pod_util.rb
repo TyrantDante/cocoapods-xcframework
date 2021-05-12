@@ -59,6 +59,7 @@ module Pod
       )
 
       installer = Installer.new(sandbox, podfile)
+      installer.repo_update = true
       installer.install!
 
       unless installer.nil? 
@@ -105,7 +106,7 @@ module Pod
       options = Hash.new
       options[:podspec] = path.to_s
       options[:subspecs] = spec.subspecs.map do |sub|
-        sub.name
+        sub.base_name
       end
       options[:subspecs] = subspecs if subspecs
       # 非常奇怪，如果传一个空的数组过去就会出问题！！
@@ -148,7 +149,7 @@ module Pod
               options[:subspecs] = cfg["subspecs"]
             else
               options[:subspecs] = spec.subspecs.map do |sub|
-                sub.name
+                sub.base_name
               end
             end
             # 非常奇怪，如果传一个空的数组过去就会出问题！！
