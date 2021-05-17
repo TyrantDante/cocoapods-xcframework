@@ -159,6 +159,7 @@ module Pod
       outputs_bundle target_dir
       new_spec_hash = generic_new_podspec_hash @spec
       new_spec_hash[:vendored_frameworks] = "#{@spec.name}.xcframework"
+      new_spec_hash = fix_header_file new_spec_hash, "#{target_dir}/#{@spec.name}.xcframework"
       find_bundles(target_dir).each do |plat, value| 
         if new_spec_hash[plat]
           new_spec_hash[plat]["resource_bundles"] = value
@@ -225,6 +226,7 @@ module Pod
         podspec = Pod::Specification.from_file podspec_path
         new_spec_hash = generic_new_podspec_hash podspec
         new_spec_hash[:vendored_frameworks] = "#{podspec.name}.xcframework"
+        new_spec_hash = fix_header_file new_spec_hash, "#{target_dir}/#{@spec.name}.xcframework"
         find_bundles("#{target_dir}/#{podspec.name}").each do |plat, value|
           if new_spec_hash[plat]
             new_spec_hash[plat]["resource_bundles"] = value

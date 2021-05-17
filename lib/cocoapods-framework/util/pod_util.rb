@@ -1,6 +1,21 @@
 module Pod
   module PodUtil
     include Config::Mixin
+
+    def to_native_platform name
+      case name
+      when 'iphoneos' then 'ios'
+      when 'macOS' then 'osx'
+      when 'appletvos' then 'tvos'
+      when 'watchos' then 'watchos'
+      when 'ios' then 'ios'
+      when 'macos' then 'osx'
+      when 'tvos' then 'tvos'
+      else
+        name
+      end
+    end
+
     def muti_config_with_file(path)
       return nil if path.nil?
       path = Pathname.new(path)
@@ -200,6 +215,27 @@ module Pod
       ].each do |key|
         spec_hash.delete "#{key}"
       end
+      spec_hash
+    end
+
+    def fix_header_file spec_hash, xcframework_path
+      puts "Dir.glob(#{xcframework_path}/*/) : #{Dir.glob("#{xcframework_path}/*/")}"
+      Dir.glob("#{xcframework_path}/*/").each do |file|
+        ['ios','macos','tvos', 'watchos'].each do |prefix|
+          last_path = file.split("/").last
+          if last_path =~ /#{prefix}/ and not last_path =~ /simulator/
+            platform = to_native_platform prefix
+            if spec_hash[platform]
+              spec_hash[platform]["public_header_files"] = "#{spec_hash[:vendored_frameworks]}/#{last_path}/*/Headers/*.h"
+            else
+              spec_hash[platform] = {
+                "public_header_files" => "#{spec_hash[:vendored_frameworks]}/#{last_path}/*/Headers/*.h"
+              }
+            end
+          end
+        end
+      end
+      puts spec_hash.to_json
       spec_hash
     end
   end

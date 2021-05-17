@@ -2,6 +2,7 @@ require 'xcodeproj'
 module Pod
   class XBuilder
     module XcodeProjHelper
+      include PodUtil
       def modify_xcode_project_sdk_to_simullator path
         sdks = xcode_sdks
         project = Xcodeproj::Project.open path
@@ -16,17 +17,6 @@ module Pod
           end
         end
         project.save
-      end
-
-      def to_native_platform name
-        case name
-        when 'iphoneos' then 'ios'
-        when 'macOS' then 'osx'
-        when 'appletvos' then 'tvos'
-        when 'watchos' then 'watchos'
-        else
-          name
-        end
       end
 
       private
