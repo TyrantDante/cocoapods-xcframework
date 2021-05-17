@@ -227,9 +227,11 @@ module Pod
             platform = to_native_platform prefix
             if spec_hash[platform]
               spec_hash[platform]["public_header_files"] = "#{spec_hash[:vendored_frameworks]}/#{last_path}/*/Headers/*.h"
+              spec_hash[platform]["source_files"] = "#{spec_hash[:vendored_frameworks]}/#{last_path}/*/Headers/*.h"
             else
               spec_hash[platform] = {
-                "public_header_files" => "#{spec_hash[:vendored_frameworks]}/#{last_path}/*/Headers/*.h"
+                "public_header_files" => "#{spec_hash[:vendored_frameworks]}/#{last_path}/*/Headers/*.h",
+                "source_files" => "#{spec_hash[:vendored_frameworks]}/#{last_path}/*/Headers/*.h"
               }
             end
           end
