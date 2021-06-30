@@ -33,7 +33,7 @@ module Pod
           ['--subspecs', 'Only include the given subspecs'],
           ['--use-modular-headers', 'pakcage uses modular headers during packaging'],
           ['--no-static-library', 'package not use static library'],
-          ['--enalbe-bitcode', 'package enable bitcode']
+          ['--enable-bitcode', 'package enable bitcode']
         ].concat super
       end
 

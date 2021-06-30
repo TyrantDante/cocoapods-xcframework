@@ -79,8 +79,11 @@ module Pod
 
       unless installer.nil? 
         installer.pods_project.targets.each do |target|
-          if enable_bitcode
-            configuration.build_settings['ENABLE_BITCODE'] = 'YES'
+          target.build_configurations.each do |configuration| 
+            if enable_bitcode && configuration.name == "Release"
+              configuration.build_settings['ENABLE_BITCODE'] = 'YES'
+              configuration.build_settings['BITCODE_GENERATION_MODE'] = 'bitcode'
+            end
           end
           if target.name == spec.name
             target.build_configurations.each do |configuration|
@@ -109,8 +112,11 @@ module Pod
       end
       unless installer.nil? 
         installer.pods_project.targets.each do |target|
-          if enable_bitcode
-            configuration.build_settings['ENABLE_BITCODE'] = 'YES'
+          target.build_configurations.each do |configuration| 
+            if enable_bitcode && configuration.name == "Release"
+              configuration.build_settings['ENABLE_BITCODE'] = 'YES'
+              configuration.build_settings['BITCODE_GENERATION_MODE'] = 'bitcode'
+            end
           end
           if specs.include? target.name
             target.build_configurations.each do |configuration|
