@@ -63,7 +63,7 @@ module Pod
       Sandbox.new(config.sandbox_root)
     end
 
-    def installation_root sandbox, spec, subspecs, sources,use_frameworks = true,use_modular_headers = true
+    def installation_root sandbox, spec, subspecs, sources,use_frameworks = true,use_modular_headers = true, enable_bitcode = false
         podfile = podfile_from_spec(
         @path,
         spec,
@@ -79,6 +79,9 @@ module Pod
 
       unless installer.nil? 
         installer.pods_project.targets.each do |target|
+          if enable_bitcode
+            configuration.build_settings['ENABLE_BITCODE'] = 'YES'
+          end
           if target.name == spec.name
             target.build_configurations.each do |configuration|
               configuration.build_settings['CLANG_MODULES_AUTOLINK'] = 'NO'
@@ -90,7 +93,7 @@ module Pod
       installer
     end
 
-    def installation_root_muti sandbox, configs, sources, use_frameworks = true, use_modular_headers = true
+    def installation_root_muti sandbox, configs, sources, use_frameworks = true, use_modular_headers = true, enable_bitcode = false
       podfile = podfile_from_muti_configs(
         configs,
         sources,
@@ -106,6 +109,9 @@ module Pod
       end
       unless installer.nil? 
         installer.pods_project.targets.each do |target|
+          if enable_bitcode
+            configuration.build_settings['ENABLE_BITCODE'] = 'YES'
+          end
           if specs.include? target.name
             target.build_configurations.each do |configuration|
               configuration.build_settings['CLANG_MODULES_AUTOLINK'] = 'NO'

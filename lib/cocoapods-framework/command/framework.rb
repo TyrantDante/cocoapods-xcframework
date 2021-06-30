@@ -32,7 +32,8 @@ module Pod
           ['--spec-sources=private,https://github.com/CocoaPods/Specs.git', 'The sources to pull dependent pods from (defaults to https://github.com/CocoaPods/Specs.git)'],
           ['--subspecs', 'Only include the given subspecs'],
           ['--use-modular-headers', 'pakcage uses modular headers during packaging'],
-          ['--no-static-library', 'package not use static library']
+          ['--no-static-library', 'package not use static library'],
+          ['--enalbe-bitcode', 'package enable bitcode']
         ].concat super
       end
 
@@ -46,6 +47,7 @@ module Pod
         @use_modular_headers = argv.option('use-modular-headers', true)
         @force = argv.flag?('force', true)
         @use_static_library = argv.flag?('static-library',true)
+        @enable_bitcode = argv.flag?('enable-bitcode',false)
         config.static_library_enable = @use_static_library
         super
       end
@@ -56,7 +58,7 @@ module Pod
       end
 
       def run
-        frameworker = Frameworker.new(@name, @source, @spec_sources, @subspecs, @configuration, @force, @use_modular_headers)
+        frameworker = Frameworker.new(@name, @source, @spec_sources, @subspecs, @configuration, @force, @use_modular_headers, @enable_bitcode)
         frameworker.run
       end
     end
