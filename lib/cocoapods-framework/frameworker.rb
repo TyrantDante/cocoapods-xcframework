@@ -37,6 +37,7 @@ module Pod
         spec,
         @subspecs,
         @spec_sources,
+        true,
         @use_modular_headers,
         @enable_bitcode
       )
